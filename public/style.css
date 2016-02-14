@@ -1,0 +1,58 @@
+.price {
+  text-align: center;
+  display: block;
+  display: inline-block;
+  margin: 0px 0px;
+  padding: 0px 32px;
+  border-color: blue;
+  border-width: 2px;
+  font-family: Lato;
+}
+.hide {
+  display: none;
+}
+
+.price sup {
+    font-size: 12px;
+    position: relative;
+    font-weight: lighter;
+}
+.price sub {
+    font-size: 16px;
+    position: relative;
+    bottom: 4px;
+    font-family: "Lato Light",
+}
+
+.price p{
+  text-color: #555555;
+}
+
+.costPerHour {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.approxCostMonth {
+  font-size: 12px;
+  margin-top: -20px;
+  font-weight: lighter;
+}
+
+.center {
+  width: 100%;
+  text-align: center;
+}
+
+.container {
+  display: inline-block;
+  width: 200px;
+  height: 280px;
+  text-align: center;
+}
+
+.setters {
+  position: relative;
+  text-align: center;
+
+}

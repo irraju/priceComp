@@ -1,0 +1,4 @@
+Do the following before accessing index.html
+
+- npm install -save
+- webpack -w

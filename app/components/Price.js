@@ -8,76 +8,85 @@ class Price extends React.Component {
 	constructor(){
 	    super();
 	    this.state = {
-	    	perHour: 0,
-	    	unitPerHour: "$",
-			perMonth: null,
-			unitPerMonth: "$"
+        perHour: 0,
+        unitPerHour: "$",
+        perMonth: null,
+        unitPerMonth: "$",
+        showMonthEstimateOnSide: false
 	    };
 	    this.updatePerHour = this.updatePerHour.bind(this);
 	    this.updateUnitPerHour = this.updateUnitPerHour.bind(this);
 	    this.updatePerMonth = this.updatePerMonth.bind(this);
 	    this.updateUnitPerMonth = this.updateUnitPerMonth.bind(this);
+      this.updateMonthEstimateOrientation = this.updateMonthEstimateOrientation.bind(this);
   	}
-
-
-	// <div class="content">
-	// 	<p class="price">
-	// 	    <sup>{this.state.unitPerHour}</sup>
-	// 	    <span>{this.state.perHour}</span>
-	// 	    <sub>/hour</sub>
-	// 	</p>
-	// 	<p class="perMonth">approx {this.state.unitPerMonth}{this.state.perMonth} /month</p>
-	// </div>
-
 
 	componentWillMount(props) {
   	    this.setState({
   	    	perHour: this.props.perHour,
   	    	unitPerHour: this.props.unitPerHour,
   	    	perMonth: this.props.perMonth,
-  	    	unitPerMonth: this.props.unitPerMonth
+  	    	unitPerMonth: this.props.unitPerMonth,
+          showMonthEstimateOnSide: this.props.showMonthEstimateOnSide
   	    });
 	}
 
 
   render(){
 
+    var priceCompClasses = classNames({
+      monthlyEstimateOnSide: this.state.showMonthEstimateOnSide,
+      priceComp: true
+    });
+
+    var priceHourClasses = classNames({
+      monthlyEstimateOnSameLine:this.state.showMonthEstimateOnSide
+    });
+
+    var durationClasses = classNames({
+      duration: true,
+      smaller: this.state.showMonthEstimateOnSide,
+      up: this.state.showMonthEstimateOnSide && (this.state.perMonth?true:false),
+      down: this.state.showMonthEstimateOnSide && (this.state.perMonth?false:true)
+    });
+
     var monthClasses = classNames({
-		hide: this.state.perMonth?false:true,
-		approxCostMonth: true
-		});
+      hide: this.state.perMonth?false:true,
+      approxMonthlyCost: true,
+      onSide: this.state.perMonth && this.state.showMonthEstimateOnSide
+    });
+
+    var  perHourCost = this.state.perHour;
+    var priceDuration = '/hour', approxMonthCost = this.state.perMonth;
+
+    if(this.state.perMonth == 0 && this.state.perHour == 0){
+        perHourCost = 'price';
+        priceDuration = '¢/hour';
+        approxMonthCost = '-.-';
+    }
 
     return (
       <div className="center" align="center">
         <div className="container">
-          <div className="price">
-            <p>
-              <sup>{this.state.unitPerHour}</sup>
-              <span className="costPerHour">{this.state.perHour}</span>
-              <sub>/hour</sub>
-            </p>
-            <p className={monthClasses}>approx {this.state.unitPerMonth}<b>{this.state.perMonth}</b>/month</p>
+          <div className= {priceCompClasses}>
+            <div className={priceHourClasses}>
+              <sup className="unitPerHour">{this.state.unitPerHour}</sup>
+              <span className="costPerHour">{perHourCost}</span>
+              <sub className={durationClasses}>{priceDuration}</sub>
+            </div>
+            <div className={monthClasses}>approx {this.state.unitPerMonth}<b>{approxMonthCost}</b>/month</div>
           </div>
           <hr />
           <div className="setters">
-            <InpSel name="unitPerHour" ref="unitPerHour" update={this.updateUnitPerHour} />
-            <InpSel name="perHour" ref="perHour"  update={this.updatePerHour} />
-            <InpSel name="perMonth" ref="perMonth" update={this.updatePerMonth} />
-            <InpSel name="unitPerMonth" ref="unitPerMonth" update={this.updateUnitPerMonth} />
+            <InpSel name="unitPerHour" type="text" ref="unitPerHour" update={this.updateUnitPerHour} />
+            <InpSel name="perHour" type="text" ref="perHour"  update={this.updatePerHour} />
+            <InpSel name="perMonth" type="text" ref="perMonth" update={this.updatePerMonth} />
+            <InpSel name="unitPerMonth" type="text" ref="unitPerMonth" update={this.updateUnitPerMonth} />
+            <InpSel name="showMonthEstimateOnSide" type="checkbox" ref="monthBySide" update={this.updateMonthEstimateOrientation} />
           </div>
         </div>
       </div>
     );
-  }
-
-  update(e){
-    // this.setState({
-    //   perHour: ReactDOM.findDOMNode(this.name="" refs.perHour.name="" refs.inp).value,
-    //   unitPerHour: ReactDOM.findDOMNode(this.name="" refs.unitPerHour.name="" refs.inp).value,
-    //   perMonth: ReactDOM.findDOMNode(this.name="" refs.perMonth.name="" refs.inp).value,
-    //   unitPerMonth: ReactDOM.findDOMNode(this.name="" refs.unitPerMonth.name="" refs.inp).value
-
-    // })
   }
 
   updatePerHour(e){
@@ -99,20 +108,10 @@ class Price extends React.Component {
 
   }
 
+  updateMonthEstimateOrientation(e){
+    this.setState({showMonthEstimateOnSide: e.target.checked});
+  }
 
-  //  render(){
-  //  	return (
-
-		// <div class="content">
-		// 	<p class="price">
-		// 	    <sup>{this.state.unitPerHour}</sup>
-		// 	    <span>{this.state.perHour}</span>
-		// 	    <sub>/hour</sub>
-		// 	</p>
-		// 	<p class="perMonth">approx {this.state.unitPerMonth}{this.state.perMonth} /month</p>
-		// </div>
-  // 	)
-  //  }
 }
 
 
@@ -136,12 +135,10 @@ class InpSel extends React.Component {
     return (
         <div>
         	{this.props.name}:<br/>
-        	<input name="" ref="inp" type="text"  name={this.props.name} onChange={this.props.update}>{this.props.a}</input>
+        	<input type="text" ref="inp" type={this.props.type} value={this.props.value}  name={this.props.name} onChange={this.props.update}></input>
         </div>
     );
   }
 }
-
-
 
 export default Price

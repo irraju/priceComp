@@ -1,43 +1,73 @@
-.price {
+.priceComp {
   text-align: center;
-  display: block;
-  display: inline-block;
   margin: 0px 0px;
   padding: 0px 32px;
-  border-color: blue;
-  border-width: 2px;
   font-family: Lato;
-}
-.hide {
-  display: none;
+  border-color: #DCDCDC;
+  border-style: solid;
+  border-width: 1px;
 }
 
-.price sup {
+
+.priceComp .unitPerHour {
     font-size: 12px;
     position: relative;
     font-weight: lighter;
+    top: -4px;
+    left: 4px;
+    color: #7F7F7F;
 }
-.price sub {
+
+.priceComp .duration {
     font-size: 16px;
     position: relative;
     bottom: 4px;
-    font-family: "Lato Light",
+    color:#7F7F7F;
 }
 
-.price p{
-  text-color: #555555;
+.priceComp .smaller {
+  font-size: 12px !important;
 }
 
-.costPerHour {
+.priceComp .up {
+  top: 4px !important;
+  position: absolute !important;
+
+}
+
+.priceComp .down {
+    bottom: 4px !important;
+    position: absolute !important;
+
+}
+
+.priceComp .costPerHour {
   font-weight: bold;
   font-size: 24px;
+  padding: 4px;
 }
 
-.approxCostMonth {
+.priceComp .approxMonthlyCost {
   font-size: 12px;
-  margin-top: -20px;
-  font-weight: lighter;
+  color: #7F7F7F;
 }
+
+.monthlyEstimateOnSide {
+  display: inline-block !important;
+}
+.monthlyEstimateOnSameLine {
+  display: inline-block !important;
+  position:relative;
+}
+
+.onSide{
+  display: inline-block;
+}
+
+/*
+Note required in  CliQr
+
+*/
 
 .center {
   width: 100%;
@@ -46,7 +76,7 @@
 
 .container {
   display: inline-block;
-  width: 200px;
+  width: 400px;
   height: 280px;
   text-align: center;
 }
@@ -54,5 +84,8 @@
 .setters {
   position: relative;
   text-align: center;
+}
 
+.hide {
+  display: none;
 }

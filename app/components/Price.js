@@ -12,54 +12,59 @@ class Price extends React.Component {
         unitPerHour: "$",
         perMonth: null,
         unitPerMonth: "$",
-        showMonthEstimateOnSide: false
+        cssClass: null
 	    };
 	    this.updatePerHour = this.updatePerHour.bind(this);
 	    this.updateUnitPerHour = this.updateUnitPerHour.bind(this);
 	    this.updatePerMonth = this.updatePerMonth.bind(this);
 	    this.updateUnitPerMonth = this.updateUnitPerMonth.bind(this);
-      this.updateMonthEstimateOrientation = this.updateMonthEstimateOrientation.bind(this);
+      this.updateCssClass = this.updateCssClass.bind(this);
   	}
 
 	componentWillMount(props) {
   	    this.setState({
-  	    	perHour: this.props.perHour,
-  	    	unitPerHour: this.props.unitPerHour,
-  	    	perMonth: this.props.perMonth,
-  	    	unitPerMonth: this.props.unitPerMonth,
-          showMonthEstimateOnSide: this.props.showMonthEstimateOnSide
+          perHour: this.props.perHour,
+          unitPerHour: this.props.unitPerHour?this.props.unitPerHour:"$",
+          perMonth: this.props.perMonth,
+          unitPerMonth: this.props.unitPerMonth?this.props.unitPerMonth:"$",
+          cssClass: this.props.cssClass
   	    });
 	}
+
+  hideMonthlyEstimate(){
+    if(this.state.perMonth === 0){
+      // Special case where all instance types are selected
+      // and variant with no values have to be shown
+      return false;
+    }else if(typeof this.state.perMonth === "undefined" ||!this.state.perMonth.length){
+      //perMonth is not set or has been made empty string in input text fields
+      return true;
+    }
+  }
 
 
   render(){
 
-    var priceCompClasses = classNames({
-      monthlyEstimateOnSide: this.state.showMonthEstimateOnSide,
-      priceComp: true
-    });
-
-    var priceHourClasses = classNames({
-      monthlyEstimateOnSameLine:this.state.showMonthEstimateOnSide
-    });
+    var priceCompClasses = "priceComp";
+    if(this.state.cssClass) priceCompClasses = priceCompClasses+" "+this.state.cssClass;
 
     var durationClasses = classNames({
       duration: true,
-      smaller: this.state.showMonthEstimateOnSide,
-      up: this.state.showMonthEstimateOnSide && (this.state.perMonth?true:false),
-      down: this.state.showMonthEstimateOnSide && (this.state.perMonth?false:true)
+      up: this.state.perMonth?true:false,
+      down: this.state.perMonth?false:true
     });
 
     var monthClasses = classNames({
-      hide: this.state.perMonth?false:true,
+      hide: this.hideMonthlyEstimate(),
       approxMonthlyCost: true,
-      onSide: this.state.perMonth && this.state.showMonthEstimateOnSide
     });
 
-    var  perHourCost = this.state.perHour;
+    var perHourCost = this.state.perHour;
+    var unitPerHour = this.state.unitPerHour;
     var priceDuration = '/hour', approxMonthCost = this.state.perMonth;
 
     if(this.state.perMonth == 0 && this.state.perHour == 0){
+        unitPerHour = '';
         perHourCost = 'price';
         priceDuration = '¢/hour';
         approxMonthCost = '-.-';
@@ -69,8 +74,8 @@ class Price extends React.Component {
       <div className="center" align="center">
         <div className="container">
           <div className= {priceCompClasses}>
-            <div className={priceHourClasses}>
-              <sup className="unitPerHour">{this.state.unitPerHour}</sup>
+            <div className="pricePerUnit">
+              <sup className="unitPerHour">{unitPerHour}</sup>
               <span className="costPerHour">{perHourCost}</span>
               <sub className={durationClasses}>{priceDuration}</sub>
             </div>
@@ -82,7 +87,7 @@ class Price extends React.Component {
             <InpSel name="perHour" type="text" ref="perHour"  update={this.updatePerHour} />
             <InpSel name="perMonth" type="text" ref="perMonth" update={this.updatePerMonth} />
             <InpSel name="unitPerMonth" type="text" ref="unitPerMonth" update={this.updateUnitPerMonth} />
-            <InpSel name="showMonthEstimateOnSide" type="checkbox" ref="monthBySide" update={this.updateMonthEstimateOrientation} />
+            <InpSel name="showMonthlyEstimateOnSide" type="checkbox" ref="monthBySide" update={this.updateCssClass} />
           </div>
         </div>
       </div>
@@ -108,8 +113,8 @@ class Price extends React.Component {
 
   }
 
-  updateMonthEstimateOrientation(e){
-    this.setState({showMonthEstimateOnSide: e.target.checked});
+  updateCssClass(e){
+    this.setState({cssClass: e.target.checked?"showMonthlyEstimateOnSide":null})
   }
 
 }
@@ -124,7 +129,7 @@ Price.propTypes = {
 
 }
 
-Price.defaultstate = {
+Price.defaultPropsData = {
 		unitPerHour: "$",
 		perMonth: null,
 		unitPerMonth: "$",

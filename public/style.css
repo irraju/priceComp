@@ -25,20 +25,20 @@
     color:#7F7F7F;
 }
 
-.priceComp .smaller {
-  font-size: 12px !important;
+.priceComp.showMonthlyEstimateOnSide .duration{
+  font-size: 12px;
+  display: inline-block;
 }
 
-.priceComp .up {
-  top: 4px !important;
-  position: absolute !important;
+.priceComp.showMonthlyEstimateOnSide .duration.up {
+  top: 4px;
+  position: absolute;
 
 }
 
-.priceComp .down {
-    bottom: 4px !important;
-    position: absolute !important;
-
+.priceComp.showMonthlyEstimateOnSide .duration.down {
+    bottom: 4px;
+    position: absolute;
 }
 
 .priceComp .costPerHour {
@@ -52,16 +52,13 @@
   color: #7F7F7F;
 }
 
-.monthlyEstimateOnSide {
-  display: inline-block !important;
-}
-.monthlyEstimateOnSameLine {
-  display: inline-block !important;
-  position:relative;
+.priceComp.showMonthlyEstimateOnSide .approxMonthlyCost{
+  display: inline-block;
 }
 
-.onSide{
+.priceComp .pricePerUnit {
   display: inline-block;
+  position:relative;
 }
 
 /*
@@ -87,5 +84,5 @@ Note required in  CliQr
 }
 
 .hide {
-  display: none;
+  display: none !important;
 }
